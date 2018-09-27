@@ -1,0 +1,124 @@
+# Import libraries
+import urllib2
+from bs4 import BeautifulSoup
+
+# Specify the url
+quote_page = "https://www.thecrimson.com/flyby/"
+
+# Query the website and return the html to the variable page
+page = urllib2.urlopen("https://www.thecrimson.com/flyby/")
+
+# Parse the html using beautiful soup and store in variable `soup`
+soup = BeautifulSoup(page, "html.parser")
+
+# Get the menu
+menu_box = soup.find("section", attrs={"class": "widget widget-primary"})
+menu = menu_box.text.strip() # strip() to remove starting and trailing
+
+# Creates a .txt file for the original menu
+def out():
+    return menu
+output = out().encode("utf-8")
+file = open("Menu.txt","w")
+file.write(output)
+file.close()
+
+# Stores original menu elements in an list foods
+foods = list()
+with open("Menu.txt", "r") as f:
+    for line in f:
+        foods.append(line)
+
+# Defines type method for food
+def type(x,y):
+    if y in x:
+        return y
+    return ""
+
+# Adds funny stuff to menu items
+i = 0
+while i < len(foods):
+    # Dinner and Lunch
+    if type(foods[i], "Dinner"):
+        foods[i] = "~~Night Slop~~"
+        foods.insert(i + 1, " ")
+    if type(foods[i], "Lunch"):
+        foods[i] = "~~Noon Slop~~"
+        foods.insert(i + 1, " ")
+    if type(foods[i], "with") or type(foods[i], "w/"):
+        foods[i] = foods[i].replace("with", "Spanked with")
+        foods[i] = foods[i].replace("w/", "Tickled with ")
+
+    # Food Type
+    if type(foods[i], "Sandwich"):
+        foods[i] = foods[i].replace("Sandwich", "Sushi")
+    if type(foods[i], "Pizza"):
+        foods[i] = foods[i].replace("Pizza", "Hungry Boi Raw Dough")
+    if type(foods[i], "Beef") or type(foods[i], "Steak"):
+        foods[i] = foods[i].replace("Beef", "Dead Dog")
+        foods[i] = foods[i].replace("Steak", "Dead Goat")
+    if type(foods[i], "Chicken"):
+        foods[i] = foods[i].replace("Chicken", '"Chicken"')
+    if type(foods[i], "Pork"):
+        foods[i] = foods[i].replace("Pork", "Local Bison") #change??
+    if type(foods[i], "Pasta") or type(foods[i], "Penne") or type(foods[i], "Fettucine"):
+        foods[i] = "Frozen " + foods[i]
+        foods[i] = foods[i].replace("Pasta", "Gluten Pubes")
+        foods[i] = foods[i].replace("Penne", "Gluten Tubes")
+        foods[i] = foods[i].replace("Fettucine", "Gluten Pubes")
+    if type(foods[i], "Noodle"):
+        foods[i] = foods[i].replace("Noodle", "Sticky Hair")
+    if type(foods[i], "Burger"):
+        foods[i] = "Crusty Crumbs of " + foods[i]
+    if type(foods[i], "Tofu"):
+        foods[i] = "Free Range " + foods[i]
+        foods[i] = foods[i].replace("Tofu", "Vegan Protein Brick")
+    if type(foods[i], "Fish"):
+      foods[i] = foods[i].replace("Fish", "Goat Carcass")
+    if type(foods[i], "Stew"):
+        foods[i] = foods[i].replace("Stew", "Milk w/Pulp")
+    if type(foods[i], "Salad"):
+        foods[i] = foods[i].replace("Salad", "Kabob")
+
+    # Additions
+    if type(foods[i], "Sauce"):
+        foods[i] = foods[i].replace("Sauce", "Juice")
+    if type(foods[i], "Veg"):
+        foods[i] = foods[i].replace("Veggie", "Loose Lettuce")
+        foods[i] = foods[i].replace("Vegetable", "Lawn Clipping")
+        foods[i] = foods[i].replace("Vegetarian", "Herbivorian")
+    if type(foods[i], "Egg"):
+        foods[i] = foods[i].replace("Egg", "Fertilized Chicken Fetus")
+    if type(foods[i], "Cheese"):
+        foods[i] = foods[i].replace("Cheese", "Toe Jam")
+    if type(foods[i], "Bean"):
+        foods[i] = foods[i].replace("Bean", "Dehydrated Legume Platelette")
+    if type(foods[i], "Vin"):
+        foods[i] = foods[i].replace("Vin", "Elitism")
+    if type(foods[i], "Pesto"):
+        foods[i] = foods[i].replace("Pesto", "Lawnmower Sauce")
+
+
+    # Cooking Method
+    if type(foods[i], "Grilled"):
+        foods[i] = foods[i].replace("Grilled", "Sewer Water Boiled")
+    if type(foods[i], "Fried"):
+        foods[i] = foods[i].replace("Fried", "Shanked")
+    if type(foods[i], "Spicy"):
+        foods[i] = foods[i].replace("Spicy", "Heavily Salted")
+    if type(foods[i], "Roasted"):
+        foods[i] = foods[i].replace("Roasted", "Shirtless")
+    if type(foods[i], "Baked"):
+        foods[i] = foods[i].replace("Baked", "Raw")
+    i += 1
+
+
+# Prints foods in terminal
+for x in foods:
+    print(x)
+
+# Creates a Foods.txt file for FUNNY MENU
+with open("Foods.txt", "w") as f:
+    for item in foods:
+        f.write("%s\n" % item)
+file.close()
